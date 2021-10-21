@@ -3,20 +3,20 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#f7ffe6'
   },
   header: {
     marginTop: 30,
-    backgroundColor: 'skyblue',
+    backgroundColor: '#669900',
     flexDirection: 'row'
   },
   footer: {
     marginTop: 20,
-    backgroundColor: 'skyblue',
+    backgroundColor: '#669900',
     flexDirection: 'row'
   },
   title: {
-    color: '#fff',
+    color: '#f7ffe6',
     fontWeight: 'bold',
     flex: 1,
     fontSize: 23,
@@ -24,7 +24,7 @@ export default StyleSheet.create({
     margin: 10,
   },
   author: {
-    color: '#fff',
+    color: '#f7ffe6',
     fontWeight: 'bold',
     flex: 1,
     fontSize: 15,
@@ -32,12 +32,12 @@ export default StyleSheet.create({
     margin: 10,
   },
   gameboard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#f7ffe6',
     alignItems: 'center',
     justifyContent: 'center'
   },
   gameinfo: {
-    backgroundColor: '#fff',
+    backgroundColor: '#f7ffe6',
     textAlign: 'center',
     justifyContent: 'center',
     fontSize: 18,
@@ -53,7 +53,7 @@ export default StyleSheet.create({
     margin: 30,
     flexDirection: "row",
     padding: 10,
-    backgroundColor: "#73CED6",
+    backgroundColor: "#88cc00",
     width: 150,
     borderRadius: 15,
     justifyContent: 'center',

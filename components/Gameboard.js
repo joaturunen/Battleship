@@ -10,23 +10,22 @@ const NBR_OF_COLS = 5;
 const NBR_OF_ROWS = 5;
 let initialBoard = new Array(NBR_OF_COLS * NBR_OF_ROWS).fill(START);
 
-
-const BOMBS = 25; // VAIHDA TÄMÄ ENNEN PALAUTUSTA !!!
-const SHIPS = 3;
-const TIME = 60; // VAIHDA TÄMÄ ENNEN PALAUTUSTA !!!
+const NBR_OF_BOMBS = 15;
+const NBR_OF_SHIPS = 3;
+const TIME = 30;
 
 export default function Gameboard() {
     const [board, setBoard] = useState(initialBoard);
     const [hits, setHits] = useState(0);
-    const [bombsLeft, setBombsLeft] = useState(BOMBS);
-    const [shipsLeft, setShipsLeft] = useState(SHIPS);
+    const [bombsLeft, setBombsLeft] = useState(NBR_OF_BOMBS);
+    const [shipsLeft, setShipsLeft] = useState(NBR_OF_SHIPS);
+    const [ships, setShips] = useState([]);
     const [timeLeft, setTimeLeft] = useState(TIME); 
     const [isActive, setIsActive] = useState(false);
     const [statusText, setStatusText] = useState("Game has not started");
     const [buttonText, setButtonText] = useState("Start game");
     const [ , updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
-    const ships = [];
 
     const items = [];
     for (let x = 0; x < NBR_OF_ROWS; x++) {
@@ -51,12 +50,9 @@ export default function Gameboard() {
             </View>
         items.push(row);
     }
-
     
     useEffect(() => {
-        console.log(ships.join(" - ")); // tämäkään ei tulosta mitään
         checkWinner();
-        
     });
 
     useEffect(() => {
@@ -75,53 +71,49 @@ export default function Gameboard() {
         let initialBoard = [...board];
         initialBoard = new Array(NBR_OF_COLS * NBR_OF_ROWS).fill(START);
         setBoard(initialBoard);
-        setBombsLeft(BOMBS);
-        setShipsLeft(SHIPS);
+        setBombsLeft(NBR_OF_BOMBS);
+        setShipsLeft(NBR_OF_SHIPS);
         setTimeLeft(TIME);
         setHits(0);
-        placeShips();
+        initShips();
     }
 
     function startGame() {
         initGame();
         setStatusText("Game is on...");
         setButtonText("New game");
-        
+        placeShips();
         setIsActive(true);
-        console.log(ships.join(" - ")); // tulostaa ships-taulukon 
     }
 
     function checkWinner() {
-        console.log(ships.join(" - ")); // ei tulosta mitään, tyhjeneekö ships tässä?
         if (hits === 3) {
             setStatusText("You sinked all ships!");
             setIsActive(false);
-        } else if (bombsLeft === 0 || timeLeft === 0) {
-            setStatusText("Game over!");
+        } else if (bombsLeft === 0) {
+            setStatusText("Game over. Ships remaining.");
+            setIsActive(false);
+        } else if (timeLeft === 0) {
+            setStatusText("Timeout. Ships remaining.");
             setIsActive(false);
         }
     }
 
     function dropBomb(number) {
-        console.log(ships.join(" - ")); // ei tulosta mitään? 
-        if (isActive === true && board[number] === START && bombsLeft > 0) { 
-            console.log(number); // tulee oikein
-            console.log(ships.join(" - ")); // ei tulosta mitään?
-            console.log(ships.indexOf(number)); // tulee aina -1
+        if (isActive === false) {
+            setStatusText("Click the start button first...");
+        } 
+        else if (isActive === true && board[number] === START && bombsLeft > 0) { 
             if (ships.indexOf(number) > -1) {
-                console.log(number);
-                console.log(ships.indexOf(number));
                 board[number] = CIRCLE;
                 setHits(hits+1);
                 setShipsLeft(shipsLeft-1);
             } else {
                 board[number] = CROSS;
             }
-
             setBombsLeft(bombsLeft-1);
             forceUpdate();
         }
-        
     }
 
     function chooseItemColor(number) {
@@ -132,18 +124,16 @@ export default function Gameboard() {
             return "#45CE30";
         }
         else {
-            return "#74B9FF";
+            return "#111a00";
         }
     }
 
     function placeShips() {
-        var min, max, r, n, p;
-
+        var min, max, n, p;
         min = 0;
         max = 24;
-        r = 3;
 
-        for (let i = 0; i < r; i++) {
+        for (let i = 0; i < NBR_OF_SHIPS; i++) {
             do {
                 n = Math.floor(Math.random() * (max - min + 1)) + min;
                 p = ships.includes(n);
@@ -153,9 +143,11 @@ export default function Gameboard() {
             }
             while(p);
         }
+        setShips(ships);
+    }
 
-        console.log(ships.join(" - ")); // POISTA TÄMÄ ENNEN PALAUTUSTA ja muut consolelogit myös !!!!
-
+    function initShips() {
+        ships.length = 0;
     }
 
     return (

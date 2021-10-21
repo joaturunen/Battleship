@@ -16,9 +16,3 @@ export default function App() {
     </View>
   );
 }
-
-
-// kaksiulotteinen taulukko laivoille (boolean ja ikoni)
-// ajastin
-// tilamuuttujien hallinta ja effecthook (näitä voi tehdä useammankin)
-// 
